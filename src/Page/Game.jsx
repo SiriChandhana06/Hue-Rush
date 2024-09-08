@@ -33,6 +33,8 @@ function Game() {
   const [columns, setColumns] = useState(4); // Default column count for easy level
   const [showConfirmDialog, setShowConfirmDialog] = useState(false); // State for confirmation dialog
   const [selectedLevel, setSelectedLevel] = useState(null); // State to hold the selected level
+  const [username, setUsername] = useState(''); 
+  const [isUsernameSubmitted, setIsUsernameSubmitted] = useState(false);
 
   useEffect(() => {
     if (timer > 0 && !gameOver) {
@@ -149,38 +151,75 @@ function Game() {
     setGameOver(false);
     setLevel(null);
     setSelectedLevel(null);
+    setUsername('');
+    setIsUsernameSubmitted(false);
+  };
+
+  const handleSubmitUsername = () => {
+    if (username.trim()) {
+      setIsUsernameSubmitted(true); // Mark the username as submitted
+    }
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center p-4">
+    <div className="bg-[conic-gradient(at_top,_var(--tw-gradient-stops))] from-gray-900 via-gray-100 to-gray-900 p-10 md:p-20">
       {!level ? (
-        <div className="flex flex-col items-center">
-          <div className="text-xl font-bold mb-4">Select Difficulty Level</div>
-          <button className="bg-blue-500 text-white px-4 py-2 rounded mb-2" onClick={() => handleLevelSelect('easy')}>Easy</button>
-          <button className="bg-yellow-500 text-white px-4 py-2 rounded mb-2" onClick={() => handleLevelSelect('medium')}>Medium</button>
-          <button className="bg-red-500 text-white px-4 py-2 rounded" onClick={() => handleLevelSelect('hard')}>Hard</button>
+        <div>
+          <div>
+            <h1 className='text-center text-4xl md:text-8xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-purple-900'>Hue Rush</h1>
+            {!isUsernameSubmitted ? (
+              <div className="text-center mt-20">
+                <input
+                  className="p-2 border rounded-xl border-gray-300 text-lg"
+                  type="text"
+                  placeholder="Enter your username"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                />
+                <button
+                  className="bg-gradient-to-bl from-purple-200 via-purple-400 to-purple-800 text-black font-semibold px-8 py-2 rounded-lg ml-4"
+                  onClick={handleSubmitUsername}
+                >
+                  Submit
+                </button>
+              </div>
+            ) : (
+              <div className="text-center mt-20 p-1 text-3xl font-bold">
+                Welcome, {username}!
+              </div>
+            )}
+            <div className=" text-2xl md:text-4xl font-bold text-center mt-20">Select Difficulty Level</div>
+          </div>
+        <div className="flex gap-10 items-center justify-center mt-10"> 
+          <button className="bg-gradient-to-bl from-purple-200 via-purple-400 to-purple-800 text-black font-semibold px-8 py-4 rounded " onClick={() => handleLevelSelect('easy')}  disabled={!isUsernameSubmitted}>Easy</button>
+          <button className="bg-gradient-to-bl from-purple-200 via-purple-400 to-purple-800 text-black font-semibold px-8 py-4 rounded " onClick={() => handleLevelSelect('medium')} disabled={!isUsernameSubmitted}>Medium</button>
+          <button className="bg-gradient-to-bl from-purple-200 via-purple-400 to-purple-800 text-black font-semibold px-8 py-4 rounded" onClick={() => handleLevelSelect('hard')} disabled={!isUsernameSubmitted}>Hard</button>
+        </div>
+        <div>
+          <h1 className='text-4xl mt-16 text-center font-semibold text-black'>Enjoy the Game! </h1>
+        </div>
         </div>
       ) : (
         <div className="flex flex-col items-center">
-          <div className="text-xl font-bold mb-4">Hue Rush</div>
-          <div className="text-lg mb-2">Score: {score}</div>
-          <div className="text-lg mb-4">Time Left: {timer}s</div>
+          <div className="text-center text-4xl md:text-8xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-purple-900">Hue Rush</div>
+          <div className="text-4xl font-semibold mt-4">Score: {score}</div>
+          <div className="text-xl font-semibold mt-4">Time Left: {timer}s</div>
           {gameOver && (
-            <div className="text-2xl font-bold mb-4 text-center">
-              Game Over! Final Score: {score}
-              <div className="text-lg mt-2">High Score: {highScore}</div>
-              <button className="bg-blue-500 text-white px-4 py-2 rounded mt-4" onClick={restartGame}>Restart</button>
+            <div className="text-2xl font-bold mt-4 text-center">
+             {username}, Game Over! Final Score: {score}
+              <div className="text-2xl mt-2">{username}, Your High Score: {highScore}</div>
+              <button className="bg-gradient-to-bl from-purple-200 via-purple-400 to-purple-800 text-black font-semibold px-4 py-2 rounded my-6" onClick={restartGame}>Restart</button>
             </div>
           )}
           <div className={`grid gap-4`} style={{ gridTemplateColumns: `repeat(${columns}, minmax(0, 1fr))` }}>
             {cards.map((card, index) => (
               <div
                 key={card.id}
-                className={`w-16 h-16 flex items-center justify-center cursor-pointer rounded-md transition-transform transform ${card.flipped ? '' : 'rotate-y-180'}`}
-                style={{ backgroundColor: card.flipped ? card.color : '#d1d5db' }} // Inline style for background color
+                className={`w-16 h-16 flex items-center justify-center mt-4 cursor-pointer rounded-md transition-transform transform ${card.flipped ? '' : 'rotate-y-180'}`}
+                style={{ backgroundColor: card.flipped ? card.color : 'white' }} // Inline style for background color
                 onClick={() => handleCardClick(index)}
               >
-                {!card.flipped && <div className="text-white text-lg">?</div>}
+                {!card.flipped && <div className="text-black text-lg">?</div>}
               </div>
             ))}
           </div>
@@ -190,8 +229,8 @@ function Game() {
         <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50">
           <div className="bg-white p-4 rounded shadow-lg text-center">
             <div className="text-lg mb-4">Are you sure you want to start the game?</div>
-            <button className="bg-blue-500 text-white px-4 py-2 rounded mr-2" onClick={startGame}>Start Game</button>
-            <button className="bg-gray-500 text-white px-4 py-2 rounded" onClick={cancelGame}>Cancel</button>
+            <button className="bg-gradient-to-tr from-violet-300 to-violet-400 text-black font-semibold px-4 py-2 rounded mr-4" onClick={startGame}>Start Game</button>
+            <button className="bg-[conic-gradient(at_top,_var(--tw-gradient-stops))] from-red-500 to-red-600 text-white px-4 py-2 rounded  " onClick={cancelGame}>Cancel</button>
           </div>
         </div>
       )}
