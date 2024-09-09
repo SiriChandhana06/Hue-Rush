@@ -112,9 +112,9 @@ function Game() {
     let numCards, columnsCount, timeLimit;
     switch (selectedLevel) {
       case 'easy':
-        numCards = 40;
+        numCards = 20;
         columnsCount = 5;
-        timeLimit = 300; 
+        timeLimit = 120; 
         break;
       case 'medium':
         numCards = 100;
@@ -184,7 +184,7 @@ function Game() {
                 </button>
               </div>
             ) : (
-              <div className="text-center mt-20 p-1 text-3xl font-bold">
+              <div className="text-center mt-20 p-1 text-3xl font-bold capitalize">
                 Welcome, {username}!
               </div>
             )}
@@ -205,9 +205,9 @@ function Game() {
           <div className="text-4xl font-semibold mt-4">Score: {score}</div>
           <div className="text-xl font-semibold mt-4">Time Left: {timer}s</div>
           {gameOver && (
-            <div className="text-2xl font-bold mt-4 text-center">
+            <div className="text-2xl font-bold mt-4 text-center capitalize">
              {username}, Game Over! Final Score: {score}
-              <div className="text-2xl mt-2">{username}, Your High Score: {highScore}</div>
+              <div className="text-2xl mt-2 capitalize">{username}, Your High Score: {highScore}</div>
               <button className="bg-gradient-to-bl from-purple-200 via-purple-400 to-purple-800 text-black font-semibold px-4 py-2 rounded my-6" onClick={restartGame}>Restart</button>
             </div>
           )}
