@@ -6,7 +6,6 @@ function App() {
   const audioRef = useRef(null); 
   const [audioStarted, setAudioStarted] = useState(false);
 
-
   const startAudio = () => {
     if (audioRef.current && !audioStarted) {
       audioRef.current.play().catch((error) => {
