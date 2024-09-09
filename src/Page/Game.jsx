@@ -123,14 +123,14 @@ function Game() {
         timeLimit = 120;
         break;
       case 'medium':
+        numCards = 40;
+        columnsCount = isPhoneView ? 4 : 8;
+        timeLimit = 180;
+        break;
+      case 'hard':
         numCards = 60;
         columnsCount = isPhoneView ? 4 : 10;
         timeLimit = 240;
-        break;
-      case 'hard':
-        numCards = 100;
-        columnsCount = isPhoneView ? 4 : 10;
-        timeLimit = 360;
         break;
       default:
         return;
